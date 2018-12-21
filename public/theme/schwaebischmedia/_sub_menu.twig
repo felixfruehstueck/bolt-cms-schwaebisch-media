@@ -1,0 +1,24 @@
+<ul class="navbar-nav mr-auto">
+{% for item in menu %}
+
+<li class="nav-item {% if item.submenu is defined %}dropdown{% else %} index-{{ loop.index }}{% if loop.first %} first{% endif %}{% if loop.last %} last{% endif %}{% if item|current %} active{% endif %}{% endif %}">
+    <a href="{% if item.submenu is defined %}#{% else %}{{ item.link }}{% endif %}" {% if item.title is defined %}title='{{ item.title|escape }}'{% endif %}
+        class='nav-link px-4 {% if item.submenu is defined %}dropdown-toggle{% else %}{% if item.class is defined %}{{item.class}}{% endif %}{% endif %}' {% if item.submenu is defined %}data-toggle="dropdown"{% endif %}>
+        {{item.label}}
+    </a>
+
+    {% if item.submenu is defined %}
+        <ul class="dropdown-menu">
+            {% for item in item.submenu %}
+                <li class="{% if item|current %} active{% endif %}">
+                    <a href="{{ item.link }}" {% if item.title is defined %}title='{{ item.title|escape }}'{% endif %}>
+                        {{item.label}}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </li>
+
+{% endfor %}
+</ul>

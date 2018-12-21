@@ -1,0 +1,362 @@
+/*
+orange: #ffad00
+rot: #690d23
+
+*/
+
+body {
+  background:#efefef; 
+  font-family: "PT Sans",sans-serif;
+  margin-top: 4rem;
+}
+
+#main-content {
+  margin-top: 6rem;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: "PT Sans",sans-serif;
+  color: #690d23;
+}
+
+.merriweather, .navbar .nav-item {
+  font-family:"Merriweather",serif;
+  color: #555;
+}
+
+.content li a, p a{text-decoration:underline}
+
+.navbar {
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
+}
+
+.navbar .container, .navbar-nav, .navbar-nav a {
+  min-height: 4rem;
+}
+
+.navbar-nav a {
+  display:flex !important;
+  align-items:center;
+}
+
+#portfolionav .nav-item {
+  font-family:Merriweather;
+  border-bottom: 3px solid #fff;
+  flex-grow:1;
+}
+
+#portfolionav .nav-item.active, #portfolionav .nav-item:hover {
+  background-color:#eee;
+  border-bottom: 3px solid #ffad00;
+}
+
+#portfolionav .navbar-brand img {
+  max-height: 2.5rem;
+  margin-right: 1rem;
+}
+
+
+/* Grid Filter Area */
+
+.sm_prod_filters button {
+  background: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  -webkit-transition: background-color 0.25s;
+  transition: background-color 0.25s;
+}
+
+.sm_prod_filters .btn.active {
+  background: #ffad00;
+}
+
+.sm_prod_filters .btn:not(.active):hover {
+  color: #ffad00;
+}
+
+
+.sm_prod_filters .btn.description {
+  background: #ccc;
+  font-weight: bold;
+}
+
+.sm_product_teaser {
+  color: #444;
+  -webkit-transition: border 0.25s;
+  transition: border 0.25s;
+}
+
+.sm_product_teaser:hover {
+  border: 1px solid rgba(0,0,0,.25);
+}
+
+
+.sm_product_teaser h6 {
+  font-weight: 700;
+  text-decoration: none;
+  margin-bottom: .3rem;
+}
+
+.sm_product_teaser span.subtitle {
+  font-size: 0.8em;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.sm_product_packshot_wrapper {
+  max-width: 100%;
+  min-height:200px;
+  height: auto;
+}
+
+.sm_product_teaser span.teasertext {
+  font-size: 0.8em;
+  color: #333;
+}
+
+.sm_product_teaser span.teasertext p {
+  margin-bottom:0;
+}
+
+/* Custom container */
+.container-fluid {
+  margin: 0 auto;
+  max-width: 1000px;
+}
+.container-fluid > hr {
+  margin: 60px 0;
+}
+
+
+/* Factsheet table layout */
+.factsheet thead, .factsheet thead th {
+  background: #eee;
+  border-top: none;
+  border-bottom: 1px solid #ccc;
+}
+
+.factsheet td, .factsheet th {
+  padding: .5rem;
+  font-size: 0.9em;
+  vertical-align: middle;
+}
+
+.factsheet td a, .factsheet th a {
+  color: #333;
+}
+
+.factsheet td a:hover, .factsheet th a:hover {
+  color: #ffad00;
+}
+
+.sm_factsheet_actions {
+  text-align: right;
+}
+
+.sm_factsheet_actions a, .sm_factsheet_actions span {
+  width: 1.4em;
+  height: auto;
+  opacity: 0.8;
+}
+
+.sm_factsheet_actions img {
+  width: 1.2em;
+  height: auto;
+}
+
+.footer {
+  background: #222;
+}
+
+.footer a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #ffad00;
+}
+
+.footer .card {
+  background:none;
+  border: none;
+}
+
+.footer .copyright {
+  background: #282828;
+}
+
+.footer .links a {
+  display: block;
+}
+
+.footer .logos img {
+  height: 1.5em;
+  width: auto;
+  display: block;
+  margin: 1em 0;
+  opacity: 0.8;
+}
+
+.footer .logos a:hover img {
+  opacity: 1;
+}
+
+/* Detail Page Styles */
+
+.card-nav-tabs {
+  border-bottom: none;
+  margin-bottom: 1px;
+}
+
+.card-nav-tabs .nav-item {
+  
+}
+
+.card-nav-tabs .nav-item .active {
+  border-bottom: 2px solid #ffad00;
+}
+
+/* CUSTOMIZE THE NAVBAR
+-------------------------------------------------- */
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: 20px;
+  margin-bottom: -90px; /* Negative margin to pull up carousel. 90px is roughly margins and height of navbar. */
+}
+.navbar-wrapper .navbar {
+
+}
+
+/* Remove border and change up box shadow for more contrast */
+.navbar .navbar-inner {
+  border: 0;
+  -webkit-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+     -moz-box-shadow: 0 2px 10px rgba(0,0,0,.25);
+          box-shadow: 0 2px 10px rgba(0,0,0,.25);
+}
+
+/* Downsize the brand/project name a bit */
+.navbar .brand {
+  padding: 14px 20px 16px; /* Increase vertical padding to match navbar links */
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+}
+
+/* Navbar links: increase padding for taller navbar */
+.navbar .nav > li > a {
+  padding: 15px 20px;
+}
+
+/* Offset the responsive button for proper vertical alignment */
+.navbar .btn-navbar {
+  margin-top: 10px;
+}
+
+
+
+
+/* MARKETING CONTENT
+-------------------------------------------------- */
+
+/* Center align the text within the three columns below the carousel */
+.marketing .span4 {
+  text-align: center;
+}
+.marketing h2 {
+  font-weight: normal;
+}
+.marketing .span4 p {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (max-width: 979px) {
+
+  .container.navbar-wrapper {
+    margin-bottom: 0;
+    width: auto;
+  }
+  .navbar-inner {
+    border-radius: 0;
+    margin: -20px 0;
+  }
+
+  .carousel .item {
+    height: 500px;
+  }
+  .carousel img {
+    width: auto;
+    height: 500px;
+  }
+
+  .featurette {
+    height: auto;
+    padding: 0;
+  }
+  .featurette-image.pull-left,
+  .featurette-image.pull-right {
+    display: block;
+    float: none;
+    max-width: 40%;
+    margin: 0 auto 20px;
+  }
+}
+
+
+@media (max-width: 767px) {
+
+  .navbar-inner {
+    margin: -20px;
+  }
+
+  .carousel {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  .carousel .container {
+
+  }
+  .carousel .item {
+    height: 300px;
+  }
+  .carousel img {
+    height: 300px;
+  }
+  .carousel-caption {
+    width: 65%;
+    padding: 0 70px;
+    margin-top: 100px;
+  }
+  .carousel-caption h1 {
+    font-size: 30px;
+  }
+  .carousel-caption .lead,
+  .carousel-caption .btn {
+    font-size: 18px;
+  }
+
+  .marketing .span4 + .span4 {
+    margin-top: 40px;
+  }
+
+  .featurette-heading {
+    font-size: 30px;
+  }
+  .featurette .lead {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+}

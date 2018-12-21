@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>
+      {%- if record.title is defined %}{{ record.title|striptags }} | {% endif -%}
+          {{ config.get('general/sitename') -}}
+      {% if record.title is not defined and config.get('general/payoff') %} | {{ config.get('general/payoff') }}{% endif -%}
+    </title>
+
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css', 'theme') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-grid.min.css', 'theme') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-reboot.min.css', 'theme') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css', 'theme') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico', 'theme') }}">
+    <link href="//fonts.googleapis.com/css?family=Merriweather:400,300,700|PT+Sans:400,700" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+  <!--navigation-->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white p-0 fixed-top" id="portfolionav">
+    <div class="container">
+      <a class="navbar-brand" href="{{ path('homepage') }}">
+        <img src="{{ asset('img/SM_logo_signet_oben_RGB_180x62.gif', 'theme') }}" />
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        {{ menu('main', '_sub_menu.twig') }}
+        {% include '_sub_searchbox.twig' %}
+      </div>
+    </div>
+  </nav>
+  <div class="container" id="main-content">
+    {% block main %}{% endblock main %}
+  </div>
+
+  {% include '_sub_footer.twig' %}
+
+
+  {# Javascript for Bootstrap #}
+  <script src="{{ asset('js/jquery.min.js', 'theme') }}"></script>
+  <script src="{{ asset('js/bootstrap.min.js', 'theme') }}"></script>
+  <script src="{{ asset('js/bootstrap.js', 'theme') }}"></script>
+  <script src="{{ asset('js/bootstrap-dropdown.js', 'theme') }}"></script>
+
+{% if app.request.get('_route') == "homepage" %}
+  <script src="{{ asset('js/isotope.pkgd.min.js', 'theme') }}"></script>
+  <script>        
+      $(document).ready(function() {
+
+          $grid = $('.grid');
+          
+          $grid .isotope({
+              // options
+              itemSelector: '.grid-item',
+              percentPosition: true
+          });
+
+          /*
+          $('.product-filters').on( 'click', '.filter', function() {
+              var filterValue = $(this).attr('data-filter');
+              $('.grid').isotope({ filter: filterValue });
+          });*/
+
+          // store filter for each group
+          var filters = {};
+
+          $('.sm_prod_filters').on( 'click', '.sm_filter', function() {
+              var $this = $(this);
+              // get group key
+              var $buttonGroup = $this.parents('.btn-group');
+              var filterGroup = $buttonGroup.attr('data-filter-group');
+              //highlight
+              if($this.hasClass("active")){
+                  filters[ filterGroup ] = "";
+                  $this.removeClass("active");
+              }else{
+                  $buttonGroup.find(".sm_filter").removeClass("active");
+                  $this.addClass("active");
+                  // set filter for group
+                  filters[ filterGroup ] = $this.attr('data-filter');
+              }
+              // combine filters
+              var filterValue = concatValues( filters );
+              $grid.isotope({ filter: filterValue });
+              console.log(filterValue);
+          });
+
+          // flatten object by concatting values
+          function concatValues( obj ) {
+          var value = '';
+          for ( var prop in obj ) {
+              value += obj[ prop ];
+          }
+          return value;
+          }
+      });
+  </script>
+{% endif %}
+
+</body>

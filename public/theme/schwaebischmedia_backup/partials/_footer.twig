@@ -1,0 +1,97 @@
+{# Footer #}
+<footer role="contentinfo" class="sm_footer">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-one-quarter">
+                <nav role="navigation" aria-label="footer navigation" class="kontakt">
+                    <p>
+                        &copy; {{ "now"|date("Y") }}
+                        {{ __("This website is <a href='%url%' target='_blank' title='Sophisticated, lightweight & simple CMS'>Built with Bolt</a>.", {'%url%':'https://bolt.cm'}) }}
+                    </p>
+                    <p>
+                        Schwäbischer Verlag GmbH<br>
+                        &amp; Co. KG Drexler, Gessler
+                    </p>
+                    <p>
+                        Karlstraße 16<br>
+                        D-88212 Ravensburg
+                    </p>
+                    <p>
+                        Tel.: +49 (0)751 29 55 - 0<br>
+                        Fax: +49 (0)751 29 55 - 1499
+                    </p>
+                    <p>
+                        info@schwaebisch-media.de
+                    </p>
+                </div>
+                <div class="column is-one-quarter">
+                    {{ menu(
+                        identifier = 'main',
+                        template = 'partials/_sub_menu_footer.twig',
+                        params = {'withsubmenus': false}
+                    ) }}
+                </div>
+                </nav>
+            </div>
+            <div class="column is-one-quarter">
+                {{ widgets('footer') }}
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% if app.request.get('_route') == "homepage" %}
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/isotope.pkgd.min.js', 'theme') }}"></script>
+    <script>        
+        $(document).ready(function() {
+
+            $grid = $('.grid');
+            
+            $grid .isotope({
+                // options
+                itemSelector: '.grid-item',
+                layoutMode: 'fitRows'
+            });
+
+            /*
+            $('.product-filters').on( 'click', '.filter', function() {
+                var filterValue = $(this).attr('data-filter');
+                $('.grid').isotope({ filter: filterValue });
+            });*/
+
+            // store filter for each group
+            var filters = {};
+
+            $('.product-filters').on( 'click', '.filter.button', function() {
+                var $this = $(this);
+                // get group key
+                var $buttonGroup = $this.parents('.button-group');
+                var filterGroup = $buttonGroup.attr('data-filter-group');
+                //highlight
+                if($this.hasClass("is-activated")){
+                    filters[ filterGroup ] = "";
+                    $this.removeClass("is-activated");
+                }else{
+                    $buttonGroup.find(".filter.button").removeClass("is-activated");
+                    $this.addClass("is-activated");
+                    // set filter for group
+                    filters[ filterGroup ] = $this.attr('data-filter');
+                }
+                // combine filters
+                var filterValue = concatValues( filters );
+                $grid.isotope({ filter: filterValue });
+                console.log(filterValue);
+            });
+
+            // flatten object by concatting values
+            function concatValues( obj ) {
+            var value = '';
+            for ( var prop in obj ) {
+                value += obj[ prop ];
+            }
+            return value;
+            }
+        });
+    </script>
+{% endif %}

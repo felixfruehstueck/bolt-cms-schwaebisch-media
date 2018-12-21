@@ -1,0 +1,17 @@
+# This file defines the different types of taxonomies in Bolt. See the
+# documentation for details: https://docs.bolt.cm/contenttypes/taxonomies
+
+tags:
+    name: Tags
+    slug: tags
+    singular_slug: tag
+    singular_Name: Tag
+    behaves_like: categories
+    multiple: true
+    options:
+        ausbildung: Ausbildung
+        stellen: Stellenanzeigen
+        marketing: Personalmarketing
+        online: Online
+        print: Print
+        event: Events
