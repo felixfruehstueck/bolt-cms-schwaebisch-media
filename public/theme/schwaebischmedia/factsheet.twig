@@ -1,5 +1,6 @@
 {% extends '_master.twig' %}
 {% block main %}
+
 <div class="card p-4">
     <h4>Produktportfolio</h4>
     <p>Produkte, Produktinfos und Termine in der Übersicht</p>
@@ -7,6 +8,7 @@
     <thead>
         <tr>
             <th scope="col">Produkt</th>
+            <th>debug cycle</th>
             <th scope="col"><!--Produkt-Version, if any --></th>
             <th scope="col">Nächster Erscheinungstermin</th>
             <th scope="col">Anzeigenschluss</th>
@@ -14,87 +16,63 @@
         </tr>
     </thead>
     <tbody>
-        {% setcontent products = 'products' %}
+        {% setcontent products = 'produkte' %}
         {% for product in products %}
-            <!-- if product has single publishing date only -->
-            {% if  product.publishingdates|length <= 1 %}
-            <tr>
-                <th scope="row"><a href="{{ product.link }}">{{ product.title }}</a></th>
-                <!-- ET -->
-                {% switch product.publishingcycle %}
-                    {% case "permanently" %}
-                        <td><!-- keine produkt variante --></td>
-                        <td class="font-italic">laufend buchbar</td>
-                    {% case "other" %}
-                        <td><!-- keine produkt variante --></td>
-                        <td class="font-italic">{{ product.publishingtext }}</td>
-                    {% case "weekly" %}
-                        {% set nextWeekly = "now"|date_modify("next #{ product.publishingweekday }") %}
-                        <td><!-- keine produkt variante --></td>
-                        <td>{{ nextWeekly |date() |localedatetime("%a. %d.%m.%Y") }}</td>
-                    <!-- one or multiple dates! -->
-                    {% case "date" %}
-                        <td><!-- keine produkt variante --></td>
-                        <td>{{ product.publishingdates|first.publishingdate |date() |localedatetime("%a. %d.%m.%Y") }}</td>
-                        <td>{{ product.publishingdates|first.closingdate |date() |localedatetime("%a. %d.%m. %H:%M") }}</td>
-                    {% default %}
-                        <td></td>
-                {% endswitch %}
-
-                <!-- AS -->
-                {% switch product.closingcycle %}
-                    {% case "other" %}
-                        <td class="font-italic">{{ product.closingtext }}</td>
-                    {% case "weekly" %}
-                        {% set nextWeekly = "now"|date_modify("next #{ product.publishingweekday }") %}
-                        <td>{{ nextWeekly |date_modify("-#{product.closingweekdayoffset} days")|localedatetime("%a. %d.%m.") }} {{ product.closingdaytime }}</td>
-                    {% case "none" %}
-                    {% default %}
-                        <td></td>
-                    {% endswitch %}
-                <td class="sm_factsheet_actions">
-                    <button type="button" class="btn btn-light btn-sm">
-                        <a href="">
-                            <img src="{{ asset('svg/download.svg', 'theme') }}" alt="Download">
-                        </a>
-                    </button>
-                    <button type="button" class="btn btn-light btn-sm">
-                        <span>
-                            <img src="{{ asset('svg/share.svg', 'theme') }}" alt="Share">
-                        </span>
-                    </button>
-                </td>
-            </tr>
-            <!-- if product has multiple publishing dates -->
-            {% else %}
-                {% for date in product.publishingdates %}
+            {% switch product.publish_cycle %}
+                {% case "permanently" %}
                     <tr>
                         <th scope="row">
-                            {% if  loop.first %}
-                                <a href="{{ product.link }}">{{ product.title }}</a>
-                            {% endif %}
-                        </th>
-                        <td>{{ date.productversion }}</td>
-                        <td>{{ date.publishingdate |date() |localedatetime("%a. %d.%m.%Y") }}</td>
-                        <td>{{ date.closingdate |date() |localedatetime("%a. %d.%m. %H:%M") }}</td>
-                        <td class="sm_factsheet_actions">
-                            <button type="button" class="btn btn-light btn-sm">
-                                <a href="">
-                                    <img src="{{ asset('svg/download.svg', 'theme') }}" alt="Download">
-                                </a>
-                            </button>
-                            <button type="button" class="btn btn-light btn-sm">
-                                <span>
-                                    <img src="{{ asset('svg/share.svg', 'theme') }}" alt="Share">
-                                </span>
-                            </button>
-                        </td>
+                            <a href="{{ product.link }}">
+                                {{ product.title }}
+                            </a>
+                        </th> 
+                        <td>{{ product.publish_cycle }}</td>
+                        <td></td> {# no product version for permanently #}
+                        <td class="font-italic">{{ product.publish_permanent_issue }}</td>
+                        <td class="font-italic">{{ product.publish_permanent_close }}</td>
                     </tr>
-                {% endfor %}
-            
-            {% endif %}
-        {% endfor %}
-    </tbody>
+                {% case "weekly" %}
+                    {% set nextWeekly = "now"|date_modify("next #{product.publish_weekly_weekday}") %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ product.link }}">
+                                {{ product.title }}
+                            </a>
+                        </th> 
+                        <td>{{ product.publish_cycle }}</td>
+                        <td></td> {# no product version for weekly #}
+                        <td>{{ nextWeekly |date() |localedatetime("%a. %d.%m.%Y") }}</td>
+                        <td>{{ nextWeekly |date_modify("-#{product.publish_weekly_close_offset} days")|localedatetime("%a. %d.%m.") }} {{ product.publish_weekly_close_time }}</td>
+                    </tr>
+                {% case "single" %}
+                    <tr>
+                        <th scope="row">
+                            <a href="{{ product.link }}">
+                                {{ product.title }}
+                            </a>
+                        </th> 
+                        <td>{{ product.publish_cycle }}</td>
+                        <td></td> {# no product version for single #}
+                        <td>{{ product.publish_single_issue|date()|localedatetime("%a. %d.%m.%Y") }}</td>
+                        <td>{{ product.publish_single_close|date()|localedatetime("%a. %d.%m. %H:%M") }}</td>
+                    </tr>
+                {% case "multiple" %}
+                    {% for date in product.publish_multiple %}
+                        <tr>
+                            <th scope="row">
+                                <a href="{{ product.link }}">
+                                    {{ product.title }}
+                                </a>
+                            </th> 
+                            <td>{{ product.publish_cycle }}</td>
+                            <td>{{ date.publish_multiple_name }}</td>
+                            <td>{{ date.publish_multiple_issue |date() |localedatetime("%a. %d.%m.%Y") }}</td>
+                            <td>{{ date.publish_multiple_close |date() |localedatetime("%a. %d.%m.%Y %H:%M") }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endswitch %}
+            {% endfor %}
+        </tbody>
     </table>
 </div>
 

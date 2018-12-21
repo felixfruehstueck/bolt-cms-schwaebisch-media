@@ -217,6 +217,25 @@ h1,h2,h3,h4,h5,h6 {
   border-bottom: 2px solid #ffad00;
 }
 
+.sm_product_pros ul {
+  list-style: none;
+  margin-left: 0;
+  padding-left: 1.2em;
+}
+
+.sm_product_pros li {
+  position: relative;
+  padding-bottom: 0.8em;
+}
+
+.sm_product_pros ul li:before {
+  position: absolute;
+  content:"\00bb";
+  left: -1.2em;
+  color: #690d23;
+  font-weight: bold;
+}
+
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 

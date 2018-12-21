@@ -13,7 +13,7 @@
     <div class="col-lg-8">
         <div class="card p-4 mb-4">
             <h1 class="my-0">{{ record.title }}</h1>
-            <div class="text-muted mb-4">{{ record.subtitle }}</div>
+            <div class="text-muted mb-4">{{ record.content_subtitle }}</div>
 
             <div class="mb-4">{{ record.body }}</div>
 
@@ -48,17 +48,46 @@
         </ul>
         <div class="card mb-4">
             <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <div>
+                    {{ record.info }}
+                </div>
+                {% if record.pros|length > 10 %}
+                <div class="sm_product_pros">
+                    <h6 class="font-weight-bold">Vorteile</h6>
+                    {{ record.pros }}
+                </div>
+                {% endif %}
             </div>
         </div>
 
+        <!-- related products -->
+        {% set relatedrecords = record.related() %}
+        {% if relatedrecords is not empty %}
         <div class="card p-4 mb-4">
             <h6 class="font-weight-bold">Ähnliche Produkte und Kombi-Rabatte</h6>
-        </div>
-
+                <div class="row align-items-start " >
+                    {% for product in relatedrecords %}
+                        <div class="col col-4 grid-item {% for channel in product.channels %}{{ channel }} {% endfor %}{{ product.type }}">
+                        <a href="{{ product.link }}">
+                            <article role="article" class="sm_product_teaser card p-3 mb-4">
+                            <h6>{{ product.teaser_title }}</h6>
+                            <span class="subtitle text-muted">{{ product.teaser_subtitle }}</span>
+                            <figure class="sm_product_packshot_wrapper">
+                                <img class="img-fluid" src="{{ product.teaser_image|thumbnail("teaser") }}">
+                            </figure>
+                            <span class="teasertext">
+                                {{ product.teaser_text }}
+                            </span>
+                            </article>
+                        </a>
+                        </div>
+                    {% else %}
+                        <div class="col col-3">{{ __("general.phrase.no-content-found") }}</div>
+                    {% endfor %}
                 </div>
+            {% endif %}
+        </div>
+        </div>
 
 
        </div>

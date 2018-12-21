@@ -16,46 +16,43 @@
 
 <section class="section section-latest-entries">
   <div class="container">
-      <h4 class="title">Produktübersicht</h4>
+    <h4 class="title">Produktübersicht</h4>
 
-      <div class="btn-group sm_prod_filters mr-2" role="group" aria-label="Filter Thema" data-filter-group="thema">
-        <button disabled type="button" class="btn description">Thema</button>
-        <button type="button" class="btn sm_filter" data-filter=".ausbildung">Ausbildung</button>
-        <button type="button" class="btn sm_filter" data-filter=".stellen">Stellenanzeigen</button>
-        <button type="button" class="btn sm_filter" data-filter=".marketing">Personalmarketing</button>
-      </div>
-
-      <div class="btn-group sm_prod_filters" role="group" aria-label="Filter Thema" data-filter-group="kanal">
-        <button disabled type="button" class="btn description">Kanal</button>
-        <button type="button" class="btn sm_filter" data-filter=".print">Print</button>
-        <button type="button" class="btn sm_filter" data-filter=".online">Online</button>
-        <button type="button" class="btn sm_filter" data-filter=".event">Events</button>
-      </div>
-        <div class="grid mt-4 row align-items-start " >
-        
-            {% setcontent products = 'products' %}
-            {% for product in products %}
-              <div class="col col-3 grid-item {% for key in product|taxonomy.tags|keys %}{{ key|split('/')|last }} {% endfor %}">
-                <a href="{{ product.link }}">
-                  <article role="article" class="sm_product_teaser card p-3 mb-4">
-                  
-                    <h6>{{ product.title }}</h6>
-                    <span class="subtitle text-muted">{{ product.subtitle }}</span>
-                    <figure class="sm_product_packshot_wrapper">
-                        <img class="img-fluid" src="{{ product.image|thumbnail("teaser") }}">
-                    </figure>
-                    <span class="teasertext">
-                        {{ product.teaser }}
-                    </span>
-                  
-                  </article>
-                </a>
-              </div>
-            {% else %}
-                <p>{{ __("general.phrase.no-content-found") }}</p>
-            {% endfor %}
-        </div>
+    <div class="btn-group sm_prod_filters mr-2" role="group" aria-label="Filter Thema" data-filter-group="thema">
+      <button disabled type="button" class="btn description">Thema</button>
+      <button type="button" class="btn sm_filter" data-filter=".ausbildung">Ausbildung</button>
+      <button type="button" class="btn sm_filter" data-filter=".stellen">Stellenanzeigen</button>
+      <button type="button" class="btn sm_filter" data-filter=".marketing">Personalmarketing</button>
     </div>
+
+    <div class="btn-group sm_prod_filters" role="group" aria-label="Filter Thema" data-filter-group="kanal">
+      <button disabled type="button" class="btn description">Kanal</button>
+      <button type="button" class="btn sm_filter" data-filter=".print">Print</button>
+      <button type="button" class="btn sm_filter" data-filter=".online">Online</button>
+      <button type="button" class="btn sm_filter" data-filter=".event">Events</button>
+    </div>
+    <div class="grid mt-4 row align-items-start " >
+      {% setcontent products = 'produkte' %}
+      {% for product in products %}
+        <div class="col col-3 grid-item {% for channel in product.channels %}{{ channel }} {% endfor %}{{ product.type }}">
+          <a href="{{ product.link }}">
+            <article role="article" class="sm_product_teaser card p-3 mb-4">
+              <h6>{{ product.teaser_title }}</h6>
+              <span class="subtitle text-muted">{{ product.teaser_subtitle }}</span>
+              <figure class="sm_product_packshot_wrapper">
+                  <img class="img-fluid" src="{{ product.teaser_image|thumbnail("teaser") }}">
+              </figure>
+              <span class="teasertext">
+                  {{ product.teaser_text }}
+              </span>
+            </article>
+          </a>
+        </div>
+      {% else %}
+        <div class="col col-3">{{ __("general.phrase.no-content-found") }}</div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
 {% endblock main %}

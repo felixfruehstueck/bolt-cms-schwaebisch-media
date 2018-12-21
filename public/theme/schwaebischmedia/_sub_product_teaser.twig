@@ -1,0 +1,16 @@
+<div class="col col-4 grid-item {% for channel in product.channels %}{{ channel }} {% endfor %}{{ product.type }}">
+    <a href="{{ product.link }}">
+        <article role="article" class="sm_product_teaser card p-3 mb-4">
+        
+        <h6>{{ product.teaser_title }}</h6>
+        <span class="subtitle text-muted">{{ product.teaser_subtitle }}</span>
+        <figure class="sm_product_packshot_wrapper">
+            <img class="img-fluid" src="{{ product.teaser_image|thumbnail("teaser") }}">
+        </figure>
+        <span class="teasertext">
+            {{ product.teaser_text }}
+        </span>
+        
+        </article>
+    </a>
+</div>

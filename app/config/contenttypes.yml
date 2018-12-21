@@ -78,120 +78,172 @@ pages:
     recordsperpage: 20
 
 
-# Entries can be used for things like 'news' or 'blogpostings'. They have a
-# 'teaser', which can be used for a short blurb on listing-pages, allowing
-# visitors to click-through to the rest of the entry. It also has fields for an
-# image and an optional video.
-# A relation is defined to the pages ContentType. This way you can refer to a
-# page from your news-item.
-# This ContentType defines 'categories' and 'tags' as taxonomies, allowing the
-# editor to use both to categorize a specific entry.
-# The 'sort' is set to '-datepublish', which means that newer entries will be
-# shown above older entries.
-
-products:
-    name: Products
-    singular_name: Product
+# Schwäbisch Media Produkte
+produkte:
+    name: Produkte
+    singular_name: Produkt
     fields:
         title:
             type: text
-            class: large
-            group: content
+            group: Allgemein
             label: "Produktname"
-            postfix: "<p>Der Produktname, z.B. <em>startbahnsüd.de</em> oder <em>Willkommen daheim</em>.</p>"
+            postfix: "<p>Max. 30 Zeichen.</p>"
+            pattern: "^.{1,30}$"
         slug:
             type: slug
             uses: title
+            group: Allgemein
             postfix: "<p>Die URL des Eintrages. Muss normalerweise nicht verändert werden.</p>"
-        subtitle:
+        type:
+            type: select
+            required: true
+            group: Allgemein
+            label: "Typ"
+            values: { 'print': "Print", 'online': "Online", 'event': "Veranstaltung" }
+        channels:
+            type: select
+            required: true
+            multiple: true
+            group: Allgemein
+            label: "Thema"
+            values: { 'ausbildung': "Ausbildung", 'recruiting': "Stellenanzeigen", 'marketing': "Personalmarketing" }
+        
+        #teaser
+        teaser_title:
             type: text
-            group: content
-            label: "Untertitel"
-            postfix: "<p>Unterzeile des Teasers (auf der Startseite), höchstens 40 Zeichen lang.</p>"
+            group: Teaser
+            label: "Titel (Teaser)"
+            postfix: "<p>Der Produktname im Raster auf der Startseite, z.B. <em>startbahnsüd.de</em> oder <em>Willkommen daheim</em>. Max. 30 Zeichen.</p>"
+            pattern: "^.{1,30}$"
+        teaser_subtitle:
+            type: text
+            group: Teaser
+            label: "Untertitel (Teaser)"
+            postfix: "<p>Unterzeile des Teasers (auf der Startseite). Max. 40 Zeichen lang.</p>"
             required: true
             pattern: "^.{1,40}$"
-        teaser:
-            type: text
-            postfix: "<p>Kurze Zusammenfassung in der Produktübersicht (auf der Startseite). Muss 50-70 Zeichen lang sein.</p>"
-            required: true
-            pattern: "^.{50,70}$"
-        body:
-            type: html
-            height: 300px
-        image:
+        teaser_image:
             type: image
-            group: content
+            group: Teaser
+            label: "Bild (Teaser, Seitenverhältnis 3x2)"
             attrib: title # Note: retrieve this in your template with {{ record.values.image.title }}
             extensions: [ gif, jpg, png ]
             placeholder: https://source.unsplash.com/1280x768/?animal,koala,kitten,puppy,cute/__random__
-        publishingcycle:
+        teaser_text:
+            type: text
+            group: Teaser
+            label: "Text (Teaser)"
+            postfix: "<p>Kurze Zusammenfassung in der Produktübersicht (auf der Startseite). Max. 70 Zeichen lang.</p>"
+            required: true
+            pattern: "^.{1,70}$"
+        
+        #hauptinhalt (oben)
+        content_subtitle:
+            type: text
+            group: Inhalt
+            uses: title
+            label: "Untertitel"
+        body:
+            type: html
+            group: Inhalt
+            height: 300px
+            label: "Inhalt"
+        image:
+            type: image
+            group: Inhalt
+            attrib: title # Note: retrieve this in your template with {{ record.values.image.title }}
+            extensions: [ gif, jpg, png ]
+            placeholder: https://source.unsplash.com/1280x768/?animal,koala,kitten,puppy,cute/__random__
+            label: "Bild"
+        
+        #kurzportrait
+        info:
+            type: html
+            group: Inhalt
+            height: 300px
+            label: "Kurzportrait"
+        pros:
+            type: html
+            group: Inhalt
+            height: 300px
+            label: "Vorteile"
+        
+        #formate + preise
+        pricing:
+            type: html
+            group: Inhalt
+            height: 300px
+            label: "Formate & Preise"
+        
+        #formate + preise
+        distribution:
+            type: html
+            group: Inhalt
+            height: 300px
+            label: "Verteilung"
+        #erscheinungsweise
+        publish_cycle:
             type: select
             required: true
             group: Erscheinungsweise
-            label: "Berechnung"
-            prefix: "<h2>Erscheinungsweise</h2>"
-            values: { 'permanently': "Laufend", 'other': "Freitext", 'weekly': "Wöchentlich", 'date': "Einmalig (Datum)" }
-        # ET Wöchentlich
-        publishingweekday:
-            type: select
-            group: Erscheinungsweise
-            label: "ET - Wochentag"
-            values: { 'Saturday': "Samstag", 'Wednesday': "Mittwoch" }
-            postfix: "<p>Nur relevant wenn Berechnung = Wöchentlich</p>"
-        #ET Freitext
-        publishingtext:
+            label: "Erscheinungsweise"
+            values: { 'permanently': "Laufend", 'weekly': "Wöchentlich", 'single': "Einmalig", 'multiple': "Mehrfach" }
+        # options für "laufend"
+        publish_permanent_issue:
             type: text
             group: Erscheinungsweise
-            label: "ET - Freitext"
-            postfix: "<p>Nur relevant wenn Berechnung = Freitext</p>"
-        #ET Einmalig (mehrfach möglich)
-        publishingdates:
+            label: "Erscheinungstermin"
+        publish_permanent_close:
+            type: text
+            group: Erscheinungsweise
+            label: "Anzeigenschluss"
+        # options für "wöchentlich"
+        publish_weekly_weekday:
+            type: select
+            group: Erscheinungsweise
+            label: "Erscheinungstag"
+            values: { 'Monday': "Montag", 'Dienstag': "Dienstag", 'Wednesday': "Mittwoch", 'Thursday': "Donnerstag", 'Friday': "Freitag", 'Saturday': "Samstag", 'Sunday': "Sonntag" }
+        publish_weekly_close_offset:
+            type: integer
+            group: Erscheinungsweise
+            label: "Anzeigenschluss - Tage vor Erscheinung"
+        publish_weekly_close_time:
+            type: text
+            group: Erscheinungsweise
+            label: "Anzeigenschluss - Uhrzeit"
+        # options "single"
+        publish_single_issue:
+            type: date
+            group: Erscheinungsweise
+            label: "Erscheinungstermin"
+        publish_single_close:
+            type: datetime
+            group: Erscheinungsweise
+            label: "Anzeigenschluss"
+        # options "multiple"
+        publish_multiple:
             type: repeater
-            label: "ET - Datum"
+            label: "Mehrfach-Erscheinung"
             fields:
-                productversion:
-                    prefix: "<p>Nur relevant wenn Berechnung = Einmalig</p>"
+                publish_multiple_name:
                     type: text
                     group: Erscheinungsweise
                     label: "Produktvariante"
-                publishingdate:
+                publish_multiple_issue:
                     type: date
                     group: Erscheinungsweise
-                    label: "ET - Datum"
-                closingdate:
+                    label: "Erscheinungstermin"
+                publish_multiple_close:
                     type: datetime
                     group: Erscheinungsweise
-                    label: "AS - Datum"
-        closingcycle:
-            type: select
-            required: true
-            group: Erscheinungsweise
-            label: "Berechnung"
-            prefix: "<hr style='border: 1px solid #333'><h2>Anzeigenschluss</h2>"
-            values: { 'other': "Freitext", 'weekly': "Wöchentlich", 'none': "ohne"}
-        # AS Wöchentlich
-        closingweekdayoffset:
-            type: integer
-            group: Erscheinungsweise
-            label: "AS - Anzahl Tage vor ET"
-        closingdaytime:
-            type: text
-            group: Erscheinungsweise
-            label: "AS - Uhrzeit"
-        #AS Freitext
-        closingtext:
-            type: text
-            group: Erscheinungsweise
-            label: "AS - Freitext"
-        
-        
+                    label: "Anzeigenschluss"
     relations:
-        pages:
-          multiple: false
+        produkte:
+          multiple: true
           order: title
-          label: Select a page
-    taxonomy: [ tags ]
-    record_template: entry.twig
+          label: "Verwandte Produkte wählen"
+
+    record_template: product.twig
     listing_template: listing.twig
     listing_records: 10
     default_status: published
